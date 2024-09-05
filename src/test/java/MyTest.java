@@ -1,11 +1,17 @@
 
 import hubai.LibrarianApplication;
+import hubai.mapper.PermissionMapper;
+import hubai.pojo.User;
+import hubai.service.IUserService;
 import hubai.service.impl.UserServiceImpl;
 import hubai.utils.CaptchaUtil;
+import hubai.utils.RespBean;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -17,8 +23,15 @@ import java.util.regex.Pattern;
 @RunWith(SpringRunner.class)
 public class MyTest {
 
+    @Autowired
+    private IUserService userService;
+
     @MockBean
-    private UserServiceImpl userService;
+    private AuthenticationManager authenticationManager;
+
+    @MockBean
+    private PermissionMapper permissionMapper;
+
 
 
     @Test
@@ -42,5 +55,12 @@ public class MyTest {
         String email="1171043694@qq.com";
         Matcher matcher = email_pattern.matcher(email);
         System.out.println(matcher.matches());
+    }
+
+    @Test
+    public void loginTest() {
+        User user = new User();
+        RespBean respBean = userService.login(user);
+
     }
 }
